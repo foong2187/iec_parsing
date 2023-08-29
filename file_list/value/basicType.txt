@@ -1,0 +1,557 @@
+
+LIB61850_API MmsDataAccessError
+MmsValue_getDataAccessError(const MmsValue* self);
+
+/**
+ * \brief Get the int64_t value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_INTEGER or MMS_UNSIGNED
+ *
+ * \return signed 64 bit integer
+ */
+LIB61850_API int64_t
+MmsValue_toInt64(const MmsValue* self);
+
+/**
+ * \brief Get the int32_t value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_INTEGER or MMS_UNSIGNED
+ *
+ * \return signed 32 bit integer
+ */
+LIB61850_API int32_t
+MmsValue_toInt32(const MmsValue* value);
+
+/**
+ * \brief Get the uint32_t value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_INTEGER or MMS_UNSIGNED
+ *
+ * \return unsigned 32 bit integer
+ */
+LIB61850_API uint32_t
+MmsValue_toUint32(const MmsValue* value);
+
+/**
+ * \brief Get the double value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of type MMS_FLOAT.
+ *
+ * \return 64 bit floating point value
+ */
+LIB61850_API double
+MmsValue_toDouble(const MmsValue* self);
+
+/**
+ * \brief Get the float value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of type MMS_FLOAT.
+ *
+ * \return 32 bit floating point value
+ */
+LIB61850_API float
+MmsValue_toFloat(const MmsValue* self);
+
+/**
+ * \brief Get the unix timestamp of a MmsValue object of type MMS_UTCTIME.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTC_TIME.
+ *
+ * \return unix timestamp of the MMS_UTCTIME variable.
+ */
+LIB61850_API uint32_t
+MmsValue_toUnixTimestamp(const MmsValue* self);
+
+/**
+ * \brief Set the float value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_FLOAT.
+ */
+LIB61850_API void
+MmsValue_setFloat(MmsValue* self, float newFloatValue);
+
+/**
+ * \brief Set the double value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_FLOAT.
+ */
+LIB61850_API void
+MmsValue_setDouble(MmsValue* self, double newFloatValue);
+
+/**
+ * \brief Set the Int8 value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_INTEGER.
+ * \param integer the new value to set
+ */
+LIB61850_API void
+MmsValue_setInt8(MmsValue* value, int8_t integer);
+
+/**
+ * \brief Set the Int16 value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_INTEGER.
+ * \param integer the new value to set
+ */
+LIB61850_API void
+MmsValue_setInt16(MmsValue* value, int16_t integer);
+
+/**
+ * \brief Set the Int32 value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_INTEGER.
+ * \param integer the new value to set
+ */
+LIB61850_API void
+MmsValue_setInt32(MmsValue* self, int32_t integer);
+
+/**
+ * \brief Set the Int64 value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_INTEGER.
+ * \param integer the new value to set
+ */
+LIB61850_API void
+MmsValue_setInt64(MmsValue* value, int64_t integer);
+
+/**
+ * \brief Set the UInt8 value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UNSIGNED.
+ * \param integer the new value to set
+ */
+LIB61850_API void
+MmsValue_setUint8(MmsValue* value, uint8_t integer);
+
+/**
+ * \brief Set the UInt16 value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UNSIGNED.
+ * \param integer the new value to set
+ */
+LIB61850_API void
+MmsValue_setUint16(MmsValue* value, uint16_t integer);
+
+/**
+ * \brief Set the UInt32 value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UNSIGNED.
+ * \param integer the new value to set
+ */
+LIB61850_API void
+MmsValue_setUint32(MmsValue* value, uint32_t integer);
+
+
+/**
+ * \brief Set the bool value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BOOLEAN.
+ * \param boolValue a bool value
+ */
+LIB61850_API void
+MmsValue_setBoolean(MmsValue* value, bool boolValue);
+
+
+/**
+ * \brief Get the bool value of a MmsValue object.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BOOLEAN.
+ *
+ * \return  the MmsValue value as bool value
+ */
+LIB61850_API bool
+MmsValue_getBoolean(const MmsValue* value);
+
+
+/**
+ * \brief Returns the value of an MMS_VISIBLE_STRING object as C string
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_VISIBLE_STRING or MMS_STRING.
+ *
+ * \returns the string value as 0 terminated C string
+ */
+LIB61850_API const char*
+MmsValue_toString(MmsValue* self);
+
+/**
+ * \brief Returns the (maximum) length of the string
+ *
+ * NOTE: this function return the amount of memory allocated for the string buffer - 1.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_VISIBLE_STRING or MMS_STRING.
+ */
+LIB61850_API int
+MmsValue_getStringSize(MmsValue* self);
+
+LIB61850_API void
+MmsValue_setVisibleString(MmsValue* self, const char* string);
+
+
+/**
+ * \brief Set a single bit (set to one) of an MmsType object of type MMS_BITSTRING
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ * \param bitPos the position of the bit in the bit string. Starting with 0. The bit with position 0 is the first bit if the MmsValue instance is serialized.
+ * \param value the new value of the bit (true = 1 / false = 0)
+ */
+LIB61850_API void
+MmsValue_setBitStringBit(MmsValue* self, int bitPos, bool value);
+
+/**
+ * \brief Get the value of a single bit (set to one) of an MmsType object of type MMS_BITSTRING
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ * \param bitPos the position of the bit in the bit string. Starting with 0. The bit with position 0 is the first bit if the MmsValue instance is serialized.
+ *
+ * \return the value of the bit (true = 1 / false = 0)
+ */
+LIB61850_API bool
+MmsValue_getBitStringBit(const MmsValue* self, int bitPos);
+
+/**
+ * \brief Delete all bits (set to zero) of an MmsType object of type MMS_BITSTRING
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ */
+LIB61850_API void
+MmsValue_deleteAllBitStringBits(MmsValue* self);
+
+
+/**
+ * \brief Get the size of a bit string in bits.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ */
+LIB61850_API int
+MmsValue_getBitStringSize(const MmsValue* self);
+
+/**
+ * \brief Get the number of bytes required by this bitString
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ */
+LIB61850_API int
+MmsValue_getBitStringByteSize(const MmsValue* self);
+
+/**
+ * \brief Count the number of set bits in a bit string.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ */
+LIB61850_API int
+MmsValue_getNumberOfSetBits(const MmsValue* self);
+
+/**
+ * Set all bits (set to one) of an MmsType object of type MMS_BITSTRING
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ */
+LIB61850_API void
+MmsValue_setAllBitStringBits(MmsValue* self);
+
+/**
+ * \brief Convert a bit string to an unsigned integer
+ *
+ * This function assumes that the first bit in the bit string is the
+ * least significant bit (little endian bit order).
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ */
+LIB61850_API uint32_t
+MmsValue_getBitStringAsInteger(const MmsValue* self);
+
+/**
+ * \brief Convert an unsigned integer to a bit string
+ *
+ * The integer representation in the bit string assumes the first bit is the
+ * least significant bit (little endian bit order).
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ * \param intValue the integer value that is used to set the bit string
+ */
+LIB61850_API void
+MmsValue_setBitStringFromInteger(MmsValue* self, uint32_t intValue);
+
+/**
+ * \brief Convert a bit string to an unsigned integer (big endian bit order)
+ *
+ * This function assumes that the first bit in the bit string is the
+ * most significant bit (big endian bit order).
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ */
+LIB61850_API uint32_t
+MmsValue_getBitStringAsIntegerBigEndian(const MmsValue* self);
+
+/**
+ * \brief Convert an unsigned integer to a bit string (big endian bit order)
+ *
+ * The integer representation in the bit string assumes the first bit is the
+ * most significant bit (big endian bit order).
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BITSTRING.
+ * \param intValue the integer value that is used to set the bit string
+ */
+LIB61850_API void
+MmsValue_setBitStringFromIntegerBigEndian(MmsValue* self, uint32_t intValue);
+
+/**
+ * \brief Update an MmsValue object of UtcTime type with a timestamp in s
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BOOLEAN.
+ * \param timeval the new value in seconds since epoch (1970/01/01 00:00 UTC)
+ */
+LIB61850_API MmsValue*
+MmsValue_setUtcTime(MmsValue* self, uint32_t timeval);
+
+/**
+ * \brief Update an MmsValue object of type MMS_UTCTIME with a millisecond time.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ * \param timeval the new value in milliseconds since epoch (1970/01/01 00:00 UTC)
+ */
+LIB61850_API MmsValue*
+MmsValue_setUtcTimeMs(MmsValue* self, uint64_t timeval);
+
+/**
+ * \brief Update an MmsValue object of type MMS_UTCTIME with a buffer containing a BER encoded UTCTime.
+ *
+ * The buffer must have a size of 8 bytes!
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ * \param buffer buffer containing the encoded UTCTime.
+ */
+LIB61850_API void
+MmsValue_setUtcTimeByBuffer(MmsValue* self, const uint8_t* buffer);
+
+/**
+ * \brief return the raw buffer containing the UTC time data
+ *
+ * Note: This will return the address of the raw byte buffer. The array length is 8 byte.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ *
+ * \return the buffer containing the raw data
+ */
+LIB61850_API uint8_t*
+MmsValue_getUtcTimeBuffer(MmsValue* self);
+
+/**
+ * \brief Get a millisecond time value from an MmsValue object of MMS_UTCTIME type.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ *
+ * \return the value in milliseconds since epoch (1970/01/01 00:00 UTC)
+ */
+LIB61850_API uint64_t
+MmsValue_getUtcTimeInMs(const MmsValue* value);
+
+/**
+ * \brief Get a millisecond time value and optional us part from an MmsValue object of MMS_UTCTIME type.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ * \param usec a pointer to store the us (microsecond) value.
+ *
+ * \return the value in milliseconds since epoch (1970/01/01 00:00 UTC)
+ */
+LIB61850_API uint64_t
+MmsValue_getUtcTimeInMsWithUs(const MmsValue* self, uint32_t* usec);
+
+
+/**
+ * \brief set the TimeQuality byte of the UtcTime
+ *
+ * Meaning of the bits in the timeQuality byte:
+ * bit 7 = leapSecondsKnown
+ * bit 6 = clockFailure
+ * bit 5 = clockNotSynchronized
+ * bit 0-4 = subsecond time accuracy (number of significant bits of subsecond time)
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ * \param timeQuality the byte representing the time quality
+ */
+LIB61850_API void
+MmsValue_setUtcTimeQuality(MmsValue* self, uint8_t timeQuality);
+
+
+/**
+ * \brief Update an MmsValue object of type MMS_UTCTIME with a millisecond time.
+ * 
+ * Meaning of the bits in the timeQuality byte:
+ *
+ * bit 7 = leapSecondsKnown
+ * bit 6 = clockFailure
+ * bit 5 = clockNotSynchronized
+ * bit 0-4 = subsecond time accuracy (number of significant bits of subsecond time)
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ * \param timeval the new value in milliseconds since epoch (1970/01/01 00:00 UTC)
+ * \param timeQuality the byte representing the time quality
+ * 
+ * \return the updated MmsValue instance
+ */
+LIB61850_API MmsValue*
+MmsValue_setUtcTimeMsEx(MmsValue* self, uint64_t timeval, uint8_t timeQuality);
+
+/**
+ * \brief get the TimeQuality byte of the UtcTime
+ *
+ * Meaning of the bits in the timeQuality byte:
+ *
+ * bit 7 = leapSecondsKnown
+ * bit 6 = clockFailure
+ * bit 5 = clockNotSynchronized
+ * bit 0-4 = subsecond time accuracy (number of significant bits of subsecond time)
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ *
+ * \return the byte representing the time quality
+ */
+LIB61850_API uint8_t
+MmsValue_getUtcTimeQuality(const MmsValue* self);
+
+/**
+ * \brief Update an MmsValue object of type MMS_BINARYTIME with a millisecond time.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_UTCTIME.
+ * \param timeval the new value in milliseconds since epoch (1970/01/01 00:00 UTC)
+ */
+LIB61850_API void
+MmsValue_setBinaryTime(MmsValue* self, uint64_t timestamp);
+
+/**
+ * \brief Get a millisecond time value from an MmsValue object of type MMS_BINARYTIME.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_BINARYTIME.
+ *
+ * \return the value in milliseconds since epoch (1970/01/01 00:00 UTC)
+ */
+LIB61850_API uint64_t
+MmsValue_getBinaryTimeAsUtcMs(const MmsValue* self);
+
+/**
+ * \brief Set the value of an MmsValue object of type MMS_OCTET_STRING.
+ *
+ * This method will copy the provided buffer to the internal buffer of the
+ * MmsValue instance. This will only happen if the internal buffer size is large
+ * enough for the new value. Otherwise the object value is not changed.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_OCTET_STRING.
+ * \param buf the buffer that contains the new value
+ * \param size the size of the buffer that contains the new value
+ */
+LIB61850_API void
+MmsValue_setOctetString(MmsValue* self, const uint8_t* buf, int size);
+
+
+/**
+ * \brief Set a single octet of an MmsValue object of type MMS_OCTET_STRING.
+ *
+ * This method will copy the provided octet to the internal buffer of the
+ * MmsValue instance, at the 'octetPos' position. This will only happen
+ * if the internal buffer size is large enough. Otherwise the object value is not changed.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_OCTET_STRING.
+ * \param octetPos the position of the octet in the octet string. Starting with 0. The octet with position 0 is the first octet if the MmsValue instance is serialized.
+ * \param value the new value of the octet (0 to 255, or 0x00 to 0xFF)
+ */
+LIB61850_API void
+MmsValue_setOctetStringOctet(MmsValue* self, int octetPos, uint8_t value);
+
+
+/**
+ * \brief Returns the size in bytes of an MmsValue object of type MMS_OCTET_STRING.
+ *
+ * NOTE: To access the byte in the buffer the function \ref MmsValue_getOctetStringBuffer
+ * has to be used.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_OCTET_STRING.
+ *
+ * \return size in bytes
+ */
+LIB61850_API uint16_t
+MmsValue_getOctetStringSize(const MmsValue* self);
+
+/**
+ * \brief Returns the maximum size in bytes of an MmsValue object of type MMS_OCTET_STRING.
+ *
+ * Returns the maximum size if bytes of the MmsValue object of type MMS_OCTET_STRING. This
+ * is the size of the internally allocated buffer to hold the octet string data.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_OCTET_STRING.
+ *
+ * \return maximum size in bytes
+ */
+LIB61850_API uint16_t
+MmsValue_getOctetStringMaxSize(MmsValue* self);
+
+/**
+ * \brief Returns the reference to the internally hold buffer of an MmsValue object of type MMS_OCTET_STRING.
+ *
+ * NOTE: The size of the buffer can be requested with the \ref MmsValue_getOctetStringSize function.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_OCTET_STRING.
+ *
+ * \return reference to the buffer
+ */
+LIB61850_API uint8_t*
+MmsValue_getOctetStringBuffer(MmsValue* self);
+
+/**
+ * \brief Get the value of a single octet of an MmsType object of type MMS_OCTET_STRING
+ *
+ * NOTE: The octet quantity of the octet string can be requested with
+ * the \ref MmsValue_getOctetStringSize function.
+ *
+ * \param self MmsValue instance to operate on. Has to be of a type MMS_OCTET_STRING.
+ * \param octetPos the position of the octet in the octet string. Starting with 0. The octet
+ *        with position 0 is the first octet if the MmsValue instance is serialized.
+ * 
+ * \return the value of the octet (0 to 255, or 0x00 to 0xFF)
+ */
+LIB61850_API uint8_t
+MmsValue_getOctetStringOctet(MmsValue* self, int octetPos);
+
+
+/**
+ * \brief Update the value of an MmsValue instance by the value of another MmsValue instance.
+ *
+ * Both instances should be of same time. E.g. is self is of type MMS_INTEGER then
+ * source has also to be of type MMS_INTEGER. Otherwise the call will have no effect.
+ *
+ * \param self MmsValue instance to operate on.
+ * \param source MmsValue used as source for the update. Has to be of same type as self
+ *
+ * \return indicates if the update has been successful (false if not)
+ */
+LIB61850_API bool
+MmsValue_update(MmsValue* self, const MmsValue* source);
+
+/**
+ * \brief Check if two instances of MmsValue have the same value.
+ *
+ * Both instances should be of same type. E.g. is self is of type MMS_INTEGER then
+ * source has also to be of type MMS_INTEGER. Otherwise the call will return false.
+ *
+ * \param self MmsValue instance to operate on.
+ * \param otherValue MmsValue that is used to test
+ *
+ * \return true if both instances are of the same type and have the same value
+ */
+LIB61850_API bool
+MmsValue_equals(const MmsValue* self, const MmsValue* otherValue);
+
+/**
+ * \brief Check if two (complex) instances of MmsValue have the same type.
+ *
+ * This function will test if the two values are of the same type. The function
+ * will return true only if all child instances in the MmsValue instance tree are
+ * also of equal type.
+ *
+ * \param self MmsValue instance to operate on.
+ * \param otherValue MmsValue that is used to test
+ *
+ * \return true if both instances and all their children are of the same type.
+ */
+LIB61850_API bool
+MmsValue_equalTypes(const MmsValue* self, const MmsValue* otherValue);

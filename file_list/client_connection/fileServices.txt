@@ -1,0 +1,133 @@
+
+
+/**
+ * \brief open a file for read
+ *
+ * \param self MmsConnection instance to operate on
+ * \param mmsError user provided variable to store error code
+ *
+ * \return the FRSM ID (file read state machine) handle of the opened file
+ */
+LIB61850_API int32_t
+MmsConnection_fileOpen(MmsConnection self, MmsError* mmsError, const char* filename, uint32_t initialPosition,
+        uint32_t* fileSize, uint64_t* lastModified);
+
+LIB61850_API void
+MmsConnection_fileOpenAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, const char* filename, uint32_t initialPosition, MmsConnection_FileOpenHandler handler,
+        void* parameter);
+
+
+/**
+ * \brief read the next data block from the file
+ *
+ * \param self MmsConnection instance to operate on
+ * \param mmsError user provided variable to store error code
+ * \param frsmId the FRSM ID (file read state machine) handle of the file
+ * \param handler callback that is invoked to deliver the received data
+ * \param handlerParameter user provided paramter that is passed to the callback function
+ *
+ * \return true if more data follows, false if last data has been received.
+ */
+LIB61850_API bool
+MmsConnection_fileRead(MmsConnection self, MmsError* mmsError, int32_t frsmId, MmsFileReadHandler handler, void* handlerParameter);
+
+LIB61850_API void
+MmsConnection_fileReadAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, int32_t frsmId, MmsConnection_FileReadHandler handler, void* parameter);
+
+/**
+ * \brief close the file with the specified frsmID
+ *
+ * \param self MmsConnection instance to operate on
+ * \param mmsError user provided variable to store error code
+ * \param frsmId id of the file to close
+ */
+LIB61850_API void
+MmsConnection_fileClose(MmsConnection self, MmsError* mmsError, int32_t frsmId);
+
+LIB61850_API void
+MmsConnection_fileCloseAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, uint32_t frsmId, MmsConnection_GenericServiceHandler handler, void* parameter);
+
+/**
+ * \brief delete the file with the specified name
+ *
+ * \param self MmsConnection instance to operate on
+ * \param mmsError user provided variable to store error code
+ * \param fileName name of the file to delete
+ */
+LIB61850_API void
+MmsConnection_fileDelete(MmsConnection self, MmsError* mmsError, const char* fileName);
+
+LIB61850_API void
+MmsConnection_fileDeleteAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, const char* fileName,
+        MmsConnection_GenericServiceHandler handler, void* parameter);
+
+/**
+ * \brief rename the file with the specified name
+ *
+ * \param self MmsConnection instance to operate on
+ * \param mmsError user provided variable to store error code
+ * \param currentFileName name of the file to rename
+ * \param newFileName new name of the file
+ */
+LIB61850_API void
+MmsConnection_fileRename(MmsConnection self, MmsError* mmsError, const char* currentFileName, const char* newFileName);
+
+LIB61850_API void
+MmsConnection_fileRenameAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, const char* currentFileName, const char* newFileName,
+        MmsConnection_GenericServiceHandler handler, void* parameter);
+
+/**
+ * \brief Send an obtainFile request to the server (used to initiate file download to server)
+ *
+ * \param self MmsConnection instance to operate on
+ * \param mmsError user provided variable to store error code
+ * \param sourceFile the name of the source file (client side name)
+ * \param destinationFile the name of the destination file (server side name)
+ */
+LIB61850_API void
+MmsConnection_obtainFile(MmsConnection self, MmsError* mmsError, const char* sourceFile, const char* destinationFile);
+
+LIB61850_API void
+MmsConnection_obtainFileAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, const char* sourceFile, const char* destinationFile,
+        MmsConnection_GenericServiceHandler handler, void* parameter);
+
+/**
+ * \brief get the file directory of the server.
+ *
+ * This function will return the directory entries of the given server directory. For each directory entry
+ * the provided callback handler is called. If the
+ *
+ * \param self MmsConnection instance to operate on
+ * \param mmsError user provided variable to store error code
+ * \param fileSpecification the file specification of the directory to browse or NULL to browse the root directory
+ * \param continueAfter continuation point or NULL for the first request. The continuation point is the first entry after the provided continuation file name.
+ * \param handler user provided callback handler
+ * \param handlerParameter user provided parameter that is passed to the handler
+ *
+ * \return (more follows) true if more data is available
+ */
+LIB61850_API bool
+MmsConnection_getFileDirectory(MmsConnection self, MmsError* mmsError, const char* fileSpecification, const char* continueAfter,
+        MmsFileDirectoryHandler handler, void* handlerParameter);
+
+LIB61850_API void
+MmsConnection_getFileDirectoryAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, const char* fileSpecification, const char* continueAfter,
+        MmsConnection_FileDirectoryHandler handler, void* parameter);
+
+
+
+LIB61850_API LinkedList /* <MmsJournalEntry> */
+MmsConnection_readJournalTimeRange(MmsConnection self, MmsError* mmsError, const char* domainId, const char* itemId,
+        MmsValue* startTime, MmsValue* endTime, bool* moreFollows);
+
+LIB61850_API void
+MmsConnection_readJournalTimeRangeAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, const char* domainId, const char* itemId,
+        MmsValue* startTime, MmsValue* endTime, MmsConnection_ReadJournalHandler handler, void* parameter);
+
+LIB61850_API LinkedList /* <MmsJournalEntry> */
+MmsConnection_readJournalStartAfter(MmsConnection self, MmsError* mmsError, const char* domainId, const char* itemId,
+        MmsValue* timeSpecification, MmsValue* entrySpecification, bool* moreFollows);
+
+LIB61850_API void
+MmsConnection_readJournalStartAfterAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, const char* domainId, const char* itemId,
+        MmsValue* timeSpecification, MmsValue* entrySpecification, MmsConnection_ReadJournalHandler handler, void* parameter);

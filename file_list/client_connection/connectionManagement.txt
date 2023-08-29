@@ -1,0 +1,149 @@
+/**
+ * \brief Create a new MmsConnection instance
+ *
+ * \return the newly created instance.
+ */
+LIB61850_API MmsConnection
+MmsConnection_create(void);
+
+/**
+ * \brief Create a new secure (TLS enabled) MmsConnection instance
+ *
+ * \param tlsConfig TLS configuration parameters and certificates
+ *
+ * \return the newly created instance.
+ */
+LIB61850_API MmsConnection
+MmsConnection_createSecure(TLSConfiguration tlsConfig);
+
+/**
+ * \brief Create a new MmsConnection instance configured for non-threaded mode
+ *
+ * NOTE: This constructor doesn't create a background thread for connection handling.
+ * The user has to call the MmsConnection_tick function periodically to ensure that
+ * the MMS connection can be handled properly.
+ *
+ * \param tlsConfig TLS configuration parameters and certificates or NULL for non-TLS mode.
+ *
+ * \return  the newly created instance.
+ */
+LIB61850_API MmsConnection
+MmsConnection_createNonThreaded(TLSConfiguration tlsConfig);
+
+/**
+ * \brief Set the callback handler to intercept the raw MMS messages of the connection
+ *
+ * This function can be used to log raw MMS messages. It may be useful for debugging purposes
+ * or advanced test tools. This function will only work when the flag CONFIG_MMS_RAW_MESSAGE_LOGGING
+ * it set in stack_config.h
+ *
+ * \param self MmsConnection instance to operate on
+ * \param handler the connection specific callback function
+ * \param a user provided parameter passed to the callback function (use NULL if not required).
+ */
+LIB61850_API void
+MmsConnection_setRawMessageHandler(MmsConnection self, MmsRawMessageHandler handler, void* parameter);
+
+/**
+ * \brief Set the virtual filestore basepath for the MMS obtain file services
+ *
+ * All external file service accesses will be mapped to paths relative to the base directory.
+ * NOTE: This function is only available when the CONFIG_SET_FILESTORE_BASEPATH_AT_RUNTIME
+ * option in stack_config.h is set.
+ *
+ * \param self the MmsServer instance
+ * \param basepath the new virtual filestore basepath
+ */
+LIB61850_API void
+MmsConnection_setFilestoreBasepath(MmsConnection self, const char* basepath);
+
+/**
+ * \brief Set the request timeout in ms for this connection
+ *
+ * \param self MmsConnection instance to operate on
+ * \param timeoutInMs request timeout in milliseconds
+ */
+LIB61850_API void
+MmsConnection_setRequestTimeout(MmsConnection self, uint32_t timeoutInMs);
+
+/**
+ * \brief Get the request timeout in ms for this connection
+ *
+ * \param self MmsConnection instance to operate on
+ *
+ * \return request timeout in milliseconds
+ */
+LIB61850_API uint32_t
+MmsConnection_getRequestTimeout(MmsConnection self);
+
+/**
+ * \brief Set the connect timeout in ms for this connection instance
+ *
+ * \param self MmsConnection instance to operate on
+ * \param timeoutInMs connect timeout in milliseconds
+ */
+LIB61850_API void
+MmsConnection_setConnectTimeout(MmsConnection self, uint32_t timeoutInMs);
+
+/**
+ * \brief Install a handler function for MMS information reports (unsolicited messages from the server).
+ *
+ * The handler function will be called whenever the client receives an MMS information report message.
+ * Note that the API user is responsible to properly free the passed MmsValue object.
+ *
+ * \param self MmsConnection instance to operate on
+ * \param handler the handler function to install for this client connection
+ * \param parameter a user specified parameter that will be passed to the handler function on each
+ *        invocation.
+ */
+LIB61850_API void
+MmsConnection_setInformationReportHandler(MmsConnection self, MmsInformationReportHandler handler,
+        void* parameter);
+
+/**
+ * \brief Get the ISO connection parameters for an MmsConnection instance
+ *
+ * \param self MmsConnection instance to operate on
+
+ * \return params the to be used by this connection
+ */
+LIB61850_API IsoConnectionParameters
+MmsConnection_getIsoConnectionParameters(MmsConnection self);
+
+/**
+ * \brief Get the MMS specific connection parameters for an MmsConnection instance
+ *
+ * \param self MmsConnection instance to operate on
+ *
+ * \return params the to be used by this connection
+ */
+LIB61850_API MmsConnectionParameters
+MmsConnection_getMmsConnectionParameters(MmsConnection self);
+
+
+/**
+ * \brief Install a callback function that will be called by the client stack if the MMS connection to the server is lost
+ *
+ * \param handler the user provided callback function
+ * \param handlerParameter a parameter that will be passed to the callback function. Can be set to NULL if not required.
+ */
+LIB61850_API void
+MmsConnection_setConnectionLostHandler(MmsConnection self, MmsConnectionLostHandler handler, void* handlerParameter);
+
+/**
+ * \brief Set the ISO connection parameters for a MmsConnection instance
+ *
+ * \param self MmsConnection instance to operate on
+ * \param params the ISO client parameters to use
+ */
+LIB61850_API void
+MmsConnection_setIsoConnectionParameters(MmsConnection self, IsoConnectionParameters* params);
+
+/**
+ * \brief Destroy an MmsConnection instance and release all resources
+ *
+ * \param self MmsConnection instance to operate on
+ */
+LIB61850_API void
+MmsConnection_destroy(MmsConnection self);
+

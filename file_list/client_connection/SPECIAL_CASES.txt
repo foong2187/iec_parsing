@@ -1,0 +1,250 @@
+/**
+ * \brief Callback function to intercept raw MMS messages
+ *
+ * IMPORTANT: the message buffer is only valid in the context of the the callback function. If the
+ * message data is required elsewhere it has to be copied here!
+ *
+ * \param parameter user provided parameter that is passed to the callback function
+ * \param message buffer of the message.
+ * \param messageLength length of the message in bytes
+ * \param received if true message has been received, false when message has been sent.
+ */
+typedef void (*MmsRawMessageHandler) (void* parameter, uint8_t* message, int messageLength, bool received);
+
+
+
+typedef void (*MmsConnectionStateChangedHandler) (MmsConnection connection, void* parameter, MmsConnectionState newState);
+
+
+LIB61850_API void
+MmsConnection_setConnectionStateChangedHandler(MmsConnection self, MmsConnectionStateChangedHandler handler, void* parameter);
+
+/**
+ * \brief User provided handler function that will be called if the connection to the server is lost
+ *
+ * \param connection MmsConnection object of the lost connection
+ * \param parameter user provided parameter.
+ */
+typedef void (*MmsConnectionLostHandler) (MmsConnection connection, void* parameter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef void
+(*MmsConnection_ConcludeAbortHandler) (void* parameter, MmsError mmsError, bool success);
+
+ludeAsync(MmsConnection self, MmsError* mmsError, MmsConnection_ConcludeAbortHandler handler, void* parameter);
+
+typedef void
+(*MmsConnection_GenericServiceHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, bool success);
+
+typedef void
+(*MmsConnection_GetNameListHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, LinkedList nameList, bool moreFollows);
+
+
+typedef void
+(*MmsConnection_ReadVariableHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, MmsValue* value);
+
+
+typedef void
+(*MmsConnection_WriteVariableHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, MmsDataAccessError accessError);
+
+
+typedef void
+(*MmsConnection_WriteMultipleVariablesHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, LinkedList /* <MmsValue*> */ accessResults);
+
+
+typedef void
+(*MmsConnection_GetVariableAccessAttributesHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, MmsVariableSpecification* spec);
+
+
+typedef void
+(*MmsConnection_ReadNVLDirectoryHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, LinkedList /* <MmsVariableAccessSpecification*> */ specs, bool deletable);
+
+
+
+/**
+ * \brief Create a new MmsVariableSpecification that can be used to define named variable lists.
+ *
+ * The created object can be deleted with free(). If the parameter strings were dynamically
+ * allocated the deallocation is in the responsibility of the user.
+ *
+ * \param domainId the MMS domain name of the variable
+ * \param itemId the name for the MMS variable
+ *
+ * \return reference to the new MmsVariableSpecfication object
+ */
+LIB61850_API MmsVariableAccessSpecification*
+MmsVariableAccessSpecification_create(char* domainId, char* itemId);
+
+/**
+ * \brief Create a new MmsVariableSpecification that can be used to define named variable lists.
+ *
+ * The created object can be deleted with free(). If the parameter strings were dynamically
+ * allocated the deallocation is in the responsibility of the user. This function should be
+ * used for named variable list entries that are array elements or components of array elements
+ * in the case when the array element is of complex (structured) type.
+ *
+ * \param domainId the MMS domain name of the variable
+ * \param itemId the name for the MMS variable
+ * \param index the array index to describe an array element
+ * \param componentName the name of the component of the array element. Should be set to NULL
+ *        if the array element is of simple type or the whole array element is required.
+ *
+ * \return reference to the new MmsVariableSpecfication object
+ */
+LIB61850_API MmsVariableAccessSpecification*
+MmsVariableAccessSpecification_createAlternateAccess(char* domainId, char* itemId, int32_t index,
+		char* componentName);
+
+/**
+ * \brief Delete the MmsVariableAccessSpecification data structure
+ *
+ * \param self the instance to delete
+ */
+LIB61850_API void
+MmsVariableAccessSpecification_destroy(MmsVariableAccessSpecification* self);
+
+
+typedef void
+(*MmsConnection_IdentifyHandler) (uint32_t invokeId, void* parameter, MmsError mmsError,
+        char* vendorName, char* modelName, char* revision);
+
+
+/**
+ * \brief Destroy (free) an MmsServerIdentity object
+ *
+ * \param self the object to destroy
+ */
+LIB61850_API void
+MmsServerIdentity_destroy(MmsServerIdentity* self);
+
+
+typedef void
+(*MmsConnection_GetServerStatusHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, int vmdLogicalStatus, int vmdPhysicalStatus);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef void
+(*MmsFileDirectoryHandler) (void* parameter, char* filename, uint32_t size, uint64_t lastModified);
+
+
+/**
+ * \brief Callback handler for the get file directory service
+ *
+ * Will be called once for each file directory entry and after the last entry with \ref filename = NULL to indicate
+ * with \ref moreFollows set to true when more data is available server side. In case of an error the callback will be called with
+ * \ref mmsError != MMS_ERROR_NONE and moreFollows = false.
+ */
+typedef void
+(*MmsConnection_FileDirectoryHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, char* filename, uint32_t size, uint64_t lastModfified,
+        bool moreFollows);
+
+typedef void
+(*MmsFileReadHandler) (void* parameter, int32_t frsmId, uint8_t* buffer, uint32_t bytesReceived);
+
+/**
+ * \brief Callback handler for the file read service
+ *
+ * Will be called for every received part of the file and when there is an error during reading the file.
+ *
+ * \param invokeId invokeID of the response
+ * \param parameter user provided context parameter
+ * \param mmsError error code
+ * \param frsmId ID of the file
+ * \param buffer buffer where the received bytes are stored
+ * \param bytesReceived number of bytes received with this response
+ * \param moreFollows more messages with parts of the file are following
+ */
+typedef void
+(*MmsConnection_FileReadHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, int32_t frsmId, uint8_t* buffer, uint32_t byteReceived,
+        bool moreFollows);
+
+
+typedef void
+(*MmsConnection_FileOpenHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, int32_t frsmId, uint32_t fileSize, uint64_t lastModified);
+
+
+
+typedef struct sMmsJournalEntry* MmsJournalEntry;
+
+typedef struct sMmsJournalVariable* MmsJournalVariable;
+
+struct sMmsJournalEntry {
+    MmsValue* entryID; /* type MMS_OCTET_STRING */
+    MmsValue* occurenceTime; /* type MMS_BINARY_TIME */
+    LinkedList journalVariables;
+};
+
+struct sMmsJournalVariable {
+    char* tag;
+    MmsValue* value;
+};
+
+
+/**
+ * \brief Destroy a single MmsJournalEntry instance.
+ *
+ * This function will destroy the whole MmsJournalEntry object including the attached list
+ * of MmsJournalVariable objects. It is intended to be used in conjunction with the
+ * LinkedList_destroyDeep function in order to free the result of MmsConnection_readJournalTimeRange
+ * or MmsConnection_readJournalStartAfter
+ *
+ * LinkedList_destroyDeep(journalEntries, (LinkedListValueDeleteFunction)
+ *                           MmsJournalEntry_destroy);
+ *
+ * \param self the MmsJournalEntry instance to destroy
+ */
+LIB61850_API void
+MmsJournalEntry_destroy(MmsJournalEntry self);
+
+LIB61850_API MmsValue*
+MmsJournalEntry_getEntryID(MmsJournalEntry self);
+
+LIB61850_API MmsValue*
+MmsJournalEntry_getOccurenceTime(MmsJournalEntry self);
+
+LIB61850_API LinkedList /* <MmsJournalVariable> */
+MmsJournalEntry_getJournalVariables(MmsJournalEntry self);
+
+LIB61850_API const char*
+MmsJournalVariable_getTag(MmsJournalVariable self);
+
+LIB61850_API MmsValue*
+MmsJournalVariable_getValue(MmsJournalVariable self);
+
+typedef void
+(*MmsConnection_ReadJournalHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, LinkedList /* <MmsJournalEntry> */ journalEntries, bool moreFollows);

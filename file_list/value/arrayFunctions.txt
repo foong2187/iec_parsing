@@ -1,0 +1,55 @@
+
+/**
+ * \brief Create an Array and initialize elements with default values.
+ *
+ * \param elementType type description for the elements the new array
+ * \param size the size of the new array
+ *
+ * \return a newly created array instance
+ */
+LIB61850_API MmsValue*
+MmsValue_createArray(const MmsVariableSpecification* elementType, int size);
+
+/**
+ * \brief Get the size of an array.
+ *
+ * \param self MmsValue instance to operate on. Has to be of type MMS_ARRAY.
+ *
+ * \return the size of the array
+ */
+LIB61850_API uint32_t
+MmsValue_getArraySize(const MmsValue* self);
+
+/**
+ * \brief Get an element of an array or structure.
+ *
+ * \param self MmsValue instance to operate on. Has to be of type MMS_ARRAY or MMS_STRUCTURE.
+ * \param index ndex of the requested array or structure element
+ *
+ * \return the element object
+ */
+LIB61850_API MmsValue*
+MmsValue_getElement(const MmsValue* array, int index);
+
+/**
+ * \brief Create an emtpy array.
+ *
+ * \param size the size of the new array
+ *
+ * \return a newly created empty array instance
+ */
+LIB61850_API MmsValue*
+MmsValue_createEmptyArray(int size);
+
+/**
+ * \brief Set an element of a complex type
+ *
+ * NOTE: If the element already exists it will simply be replaced by the provided new value.
+ * The caller is responsible to free the replaced value.
+ *
+ * \param complexValue MmsValue instance to operate on. Has to be of a type MMS_STRUCTURE or MMS_ARRAY
+ * \param the index of the element to set/replace
+ * \param elementValue the (new) value of the element
+ */
+LIB61850_API void
+MmsValue_setElement(MmsValue* complexValue, int index, MmsValue* elementValue);
